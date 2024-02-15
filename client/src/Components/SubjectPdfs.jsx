@@ -12,7 +12,9 @@ const SubjectPdfs = ({ loggedIn }) => {
   const [pdfs, setPdfs] = useState([]);
   const [filteredPdfs, setFilteredPdfs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  
 
+ 
   const fetchPdfs = async () => {
     try {
       setIsLoading(true);
@@ -70,6 +72,7 @@ const SubjectPdfs = ({ loggedIn }) => {
                 pdf={pdf}
                 onClick={() => window.open(`${backendUrl}files/${pdf.title}`, '_blank')}
                 loggedIn={loggedIn}
+                userId = {pdf.userId}
                 onPdfChange={onPdfChange}
               />
             ))}

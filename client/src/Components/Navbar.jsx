@@ -1,12 +1,11 @@
-// Navbar.jsx
 import React, { useEffect, useState } from "react";
-import axios from 'axios'
+import axios from "axios";
 import {
   Flex,
   Button,
+  Menu,
   MenuButton,
   MenuItem,
-  Menu,
   MenuList,
   Avatar,
   Modal,
@@ -19,7 +18,7 @@ import {
   Link as ChakraLink,
 } from "@chakra-ui/react";
 import UploadPDF from "./UploadPDF";
-import { backendUrl } from '../constants';
+import { backendUrl } from "../constants";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 const Navbar = ({ loggedIn, onLogout }) => {
@@ -32,6 +31,7 @@ const Navbar = ({ loggedIn, onLogout }) => {
       fetchUser();
     }
   }, [loggedIn]);
+
   const fetchUser = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -47,9 +47,9 @@ const Navbar = ({ loggedIn, onLogout }) => {
         navigate("/login");
         return;
       }
-      console.log(response.data);
+
       setUser(response.data.user);
-      console.log(user.email, user.id);
+      console.log(response.data.user)
     } catch (error) {
       console.error("Error fetching user:", error);
       // Handle error, e.g., redirect to login
@@ -130,28 +130,26 @@ const Navbar = ({ loggedIn, onLogout }) => {
             </ChakraLink>
           </>
         ) : (
-          <>
-            <Menu color="black">
-              <MenuButton>
-                <Avatar size="sm" name={user.email} />
-              </MenuButton>
-              <MenuList>
-                <MenuItem style={{ color: "black", fontSize: "15px" }}>
-                  Email : {user.email}
-                </MenuItem>
-                <MenuItem style={{ color: "black", fontSize: "15px" }}>
-                  User Id : {user.userId}
-                </MenuItem>
-              </MenuList>
-            </Menu>
-            <Button
-              onClick={handleLogout}
-              colorScheme="red"
-              _hover={{ bg: "red.600" }}
-            >
-              Logout
-            </Button>
-          </>
+          <Menu>
+            <MenuButton>
+              <Avatar size="sm" name={user.email} />
+            </MenuButton>
+            <MenuList>
+              <MenuItem
+                style={{ color: "black", fontSize: "15px" }}
+                as={RouterLink}
+                to={`/pdfs/${user.userId}`}
+              >
+                My Profile
+              </MenuItem>
+              <MenuItem
+                style={{ color: "black", fontSize: "15px" }}
+                onClick={handleLogout}
+              >
+                Logout
+              </MenuItem>
+            </MenuList>
+          </Menu>
         )}
       </Flex>
 
@@ -161,7 +159,7 @@ const Navbar = ({ loggedIn, onLogout }) => {
           <ModalHeader>Upload PDF</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <UploadPDF onClose={handleCloseUploadModal} />
+            <UploadPDF loggedIn={loggedIn} onClose={handleCloseUploadModal} />
           </ModalBody>
           <ModalFooter></ModalFooter>
         </ModalContent>

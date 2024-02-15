@@ -6,7 +6,7 @@ import HomePage from './Components/HomePage';
 import Signup from './Components/Signup';
 import Library from './Components/Library';
 import SubjectPdfs from './Components/SubjectPdfs';
-
+import UserProfile from './Components/UserProfile';
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -54,6 +54,7 @@ function App() {
               )
             }
           />
+           <Route path="/pdfs/:userId" element={<UserProfile loggedIn={loggedIn}  />} />
           <Route path="/subjects" element={<Library />} />
           <Route
             path="/subjects/:subjectName"

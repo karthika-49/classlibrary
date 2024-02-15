@@ -13,36 +13,60 @@ import {
 import axios from "axios";
 import { backendUrl } from "../constants";
 
-const UploadPDF = ({ onClose }) => {
+const UploadPDF = ({ loggedIn, onClose }) => {
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState("");
   const [pdfTitle, setPdfTitle] = useState("");
   const [pdfFile, setPdfFile] = useState(null);
+  const [userId, setUserId] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [showEmptyFieldsAlert, setShowEmptyFieldsAlert] = useState(false);
 
   useEffect(() => {
-    const fetchSubjects = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(`${backendUrl}subjects/all`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setSubjects(response.data);
-      } catch (error) {
-        console.error("Error fetching subjects:", error.message);
-      }
-    };
+    if (loggedIn) {
+      fetchUser();
+      fetchSubjects();
+    }
+  }, [loggedIn]);
 
-    fetchSubjects();
-  }, []);
+  const fetchUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.get(`${backendUrl}user/profile`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (!response.data || !response.data.user) {
+        throw new Error("User profile data not found.");
+      }
+
+      setUserId(response.data.user.userId);
+      console.log(response.data.userId);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
+
+  const fetchSubjects = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${backendUrl}subjects/all`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setSubjects(response.data);
+    } catch (error) {
+      console.error("Error fetching subjects:", error.message);
+    }
+  };
 
   const handleUploadPDF = async () => {
     try {
       if (!selectedSubject || !pdfTitle || !pdfFile) {
         console.error("Please fill in all fields.");
         setShowEmptyFieldsAlert(true);
-        // Hide the empty fields alert after 1 second
         setTimeout(() => {
           setShowEmptyFieldsAlert(false);
         }, 1000);
@@ -54,6 +78,7 @@ const UploadPDF = ({ onClose }) => {
       const formData = new FormData();
       formData.append("subject", selectedSubject);
       formData.append("title", pdfTitle);
+      formData.append("userId", userId); // Add userId to the form data
       formData.append("url", "temp-url"); 
       formData.append("file", pdfFile);
 
