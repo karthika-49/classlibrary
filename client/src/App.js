@@ -54,7 +54,7 @@ function App() {
               )
             }
           />
-           <Route path="/pdfs/:userId" element={<UserProfile loggedIn={loggedIn}  />} />
+           <Route path="/user/:userId" element={<UserProfile loggedIn={loggedIn}  />} />
           <Route path="/subjects" element={<Library />} />
           <Route
             path="/subjects/:subjectName"
