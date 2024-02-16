@@ -19,6 +19,7 @@ const upload = multer({ storage: storage });
 
 router.get('/',  pdfController.getAllPdfs);
 router.get('/:subject', pdfController.getPdfsBySubject);
+router.get('/:id', pdfController.getPdfsByUser);
 router.post('/add', authMiddleware.auth, upload.single('file'), pdfController.addPdf);
 router.delete('/:pdfId', authMiddleware.auth, pdfController.deletePdf);
 

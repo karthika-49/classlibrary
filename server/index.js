@@ -4,6 +4,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const pdfRoutes = require('./routes/pdfRoutes');
 const subjectRoutes = require('./routes/subjectRoutes');
+const userRoute = require('./routes/userRoute')
 const mongodbURI = require('./constants.js')
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,7 +14,8 @@ const bodyParser = require("body-parser");
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/files", express.static("uploads"))
-// Connect to MongoDB
+
+// Connecting to MongoDB
 mongoose
   .connect(mongodbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -24,6 +26,7 @@ mongoose
   });
 
 // Routes
+app.use('/user',userRoute );
 app.use('/auth', authRoutes);
 app.use('/pdfs', pdfRoutes);
 app.use('/subjects', subjectRoutes);
