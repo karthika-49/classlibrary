@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
 const UserSchema = new mongoose.Schema({
+	//Included name here but didn't include in signup form. User need to update name in User Profile section after login.
 	name:{
 		type:String,
 	},
