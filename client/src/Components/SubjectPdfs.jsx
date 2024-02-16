@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, Text } from '@chakra-ui/react';
+import { Box, Grid, Text, Flex } from '@chakra-ui/react';
 import PdfBox from './PdfBox';
 import SearchBar from './SearchBar';
 import Spinner from './Spinner'; // Import the Spinner component

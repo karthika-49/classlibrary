@@ -100,7 +100,7 @@ const PdfBox = ({ pdf, onClick, loggedIn, onPdfChange }) => {
       )}
 
       <Image src={logo} alt="Logo" maxH="100px" mb={2} />
-      <Heading fontSize="md" textAlign="center">
+      <Heading fontSize="xs" textAlign="center">
         {pdf.originalName}
       </Heading>
 

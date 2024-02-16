@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { IoLogOutOutline,IoPersonOutline } from "react-icons/io5";
 import {
   Flex,
   Button,
@@ -16,6 +17,7 @@ import {
   ModalBody,
   ModalCloseButton,
   Link as ChakraLink,
+  Text,
 } from "@chakra-ui/react";
 import UploadPDF from "./UploadPDF";
 import { backendUrl } from "../constants";
@@ -43,7 +45,6 @@ const Navbar = ({ loggedIn, onLogout }) => {
       });
 
       if (!response.data) {
-        // Handle error, e.g., redirect to login
         navigate("/login");
         return;
       }
@@ -52,7 +53,6 @@ const Navbar = ({ loggedIn, onLogout }) => {
       console.log(response.data.user)
     } catch (error) {
       console.error("Error fetching user:", error);
-      // Handle error, e.g., redirect to login
       navigate("/login");
     }
   };
@@ -93,7 +93,7 @@ const Navbar = ({ loggedIn, onLogout }) => {
         <ChakraLink
           as={RouterLink}
           to="/subjects"
-          mx={4}
+          mx={3}
           _hover={{ textDecoration: "none", color: "whitesmoke" }}
         >
           Subjects
@@ -101,7 +101,7 @@ const Navbar = ({ loggedIn, onLogout }) => {
 
         {loggedIn && (
           <Button
-            mx={4}
+            mx={3}
             colorScheme="gray"
             onClick={handleOpenUploadModal}
             _hover={{ bg: "gray.300" }}
@@ -115,7 +115,7 @@ const Navbar = ({ loggedIn, onLogout }) => {
             <ChakraLink
               as={RouterLink}
               to="/signup"
-              mx={4}
+              mx={3}
               _hover={{ textDecoration: "none", color: "whitesmoke" }}
             >
               Signup
@@ -123,7 +123,7 @@ const Navbar = ({ loggedIn, onLogout }) => {
             <ChakraLink
               as={RouterLink}
               to="/login"
-              mx={4}
+              mx={3}
               _hover={{ textDecoration: "none", color: "whitesmoke" }}
             >
               Login
@@ -138,15 +138,17 @@ const Navbar = ({ loggedIn, onLogout }) => {
               <MenuItem
                 style={{ color: "black", fontSize: "15px" }}
                 as={RouterLink}
-                to={`/pdfs/${user.userId}`}
+                to={`/user/${user.userId}`}
               >
-                My Profile
+                 <Text marginRight={'5px'}>My Profile </Text><IoPersonOutline />
+
               </MenuItem>
               <MenuItem
                 style={{ color: "black", fontSize: "15px" }}
                 onClick={handleLogout}
               >
-                Logout
+                <Text marginRight={'5px'}>Logout </Text><IoLogOutOutline />
+
               </MenuItem>
             </MenuList>
           </Menu>
