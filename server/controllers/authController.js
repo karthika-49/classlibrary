@@ -1,5 +1,7 @@
 const UserModel = require('../models/User');
 const jwt = require('jsonwebtoken');
+const dotenv = require("dotenv").config({path:".env"})
+const JWT_SECRET =  process.env.JWT_SECRET;
 
 function generateUserId() {
   return Date.now().toString();
@@ -52,7 +54,7 @@ async function login(req, res) {
       return res.status(403).json({ error: 'Incorrect password' });
     }
 
-    const token = jwt.sign({ id: user.userId }, 'secret');
+    const token = jwt.sign({ id: user.userId }, JWT_SECRET);
 
     console.log('User logged in!');
     console.log(email);
